@@ -1,5 +1,3 @@
-from createBoard import Board
+from gameplay import Gameplay
 
-
-b = Board()
-b.printBoard()
+Gameplay()
