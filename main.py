@@ -1,3 +1,6 @@
 from gameplay import Gameplay
 
-Gameplay()
+G = Gameplay()
+
+while True:
+    G.move()
