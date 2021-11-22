@@ -4,6 +4,10 @@ class Board:
         self.board = self.createB()
 
     def __str__(self):
+        '''
+        Prints the board in a single string for saving
+        :return: The string value for saving
+        '''
         value = ""
         for row in self.board[1:9]:
             for pos in row[1:9]:
@@ -12,6 +16,10 @@ class Board:
         return value
 
     def printBoard(self):
+        '''
+        Prints out the board in the correct chess layout
+        :return:
+        '''
         string = ''
         for i in (range(10).__reversed__()):
             string += str(self.board[i]) + '\n'
@@ -19,6 +27,10 @@ class Board:
         print(string.replace(',', '').replace("'", ""))
 
     def createB(self):
+        '''
+        Creates the initial board
+        :return: The board
+        '''
         board = [list(['.'] * 10) for _ in range(10)]
 
         # Creates the board layout

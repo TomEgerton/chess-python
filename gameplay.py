@@ -15,14 +15,24 @@ class Gameplay:
               "\n-Castling is called with the command o-o or king side, or o-o-o for queen side.")
         self.b.printBoard()
         self.movecount = 0
+
+        # First and second value of the origin
         self.Ofirstval = 0
+        self.Osecondval = 0
+
+        # First and second value of the destination
         self.Dfirstval = 0
         self.Dsecondval = 0
-        self.Osecondval = 0
+
+        # Variables for the castling move, location and letters are changed when turn is set to black
         self.location = 1
         self.king = 'K'
         self.castle = 'C'
+
+        # Dictionary to convert the letter values to integers
         self.moveDic = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8}
+
+        # User input variables for move
         self.origin = ''
         self.destination = ''
 
@@ -31,6 +41,10 @@ class Gameplay:
         self.move()
 
     def moveCount(self):
+        '''
+        Keeps track of the moves and adjusts values based on which players move it is
+        :return:
+        '''
         self.movecount = self.movecount + 1
         if (self.movecount % 2) == 0:
             self.white = True
@@ -133,6 +147,7 @@ class Gameplay:
         :return:
         """
         if self.winstate():
+            # Allows the players to win if king is taken
             if self.white:
                 print("White Wins")
                 quit()
@@ -144,12 +159,13 @@ class Gameplay:
                 print("Select a valid position")
                 self.move()
             else:
-
+                # Updates the txt file
                 s.update(self.b.board[int(self.Osecondval)][int(self.Ofirstval)], int(self.Dsecondval), int(self.Dfirstval))
                 s.update('.', int(self.Osecondval), int(self.Ofirstval))
+
+                # Updates the game board
                 self.b.board[int(self.Dsecondval)][int(self.Dfirstval)] = self.b.board[int(self.Osecondval)][
                     int(self.Ofirstval)]
-
                 self.b.board[int(self.Osecondval)][int(self.Ofirstval)] = '.'
                 return True
 
@@ -166,21 +182,26 @@ class Gameplay:
                 return True
 
     def castling(self):
+        '''
+        Allows the player to use the castling move
+        :return:
+        '''
 
+        # King side castling
         if self.origin == 'o-o':
+
             if self.b.board[self.location][4] == self.king:
+                # Checks to see if the move is possible
                 if self.b.board[self.location][2] != '.' or self.b.board[self.location][3] != '.':
                     print("Invalid move")
                     self.move()
                     return False
                 elif self.b.board[self.location][1] == self.castle:
-
+                    # Updates the board and file if move is possible
                     s.update('.', self.location, 4)
                     s.update('.', self.location, 1)
                     s.update(self.king, self.location, 2)
                     s.update(self.castle, self.location, 3)
-
-
 
                     self.b.board[self.location][4] = '.'
                     self.b.board[self.location][1] = '.'
@@ -222,6 +243,10 @@ class Gameplay:
             return
 
     def winstate(self):
+        '''
+        Checks to see if the player has won by taking the king
+        :return:
+        '''
         if self.white:
             if self.b.board[int(self.Dsecondval)][int(self.Dfirstval)] == 'k':
                 self.b.board[int(self.Dsecondval)][int(self.Dfirstval)] = self.b.board[int(self.Osecondval)][
