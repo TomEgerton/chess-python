@@ -3,6 +3,14 @@ class Board:
     def __init__(self):
         self.board = self.createB()
 
+    def __str__(self):
+        value = ""
+        for row in self.board[1:9]:
+            for pos in row[1:9]:
+                value += pos
+
+        return value
+
     def printBoard(self):
         string = ''
         for i in (range(10).__reversed__()):

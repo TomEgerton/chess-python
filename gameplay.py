@@ -1,22 +1,24 @@
 from createBoard import Board
+from save import Save
 
+s = Save()
 
 class Gameplay:
 
     def __init__(self):
-
         self.b = Board()
+        s.save(str(self.b))
+
         print("======= TOM'S CHESS GAME WOW ======="
               "\n-Type desired location via grid coordinates eg - a5"
+              "\n-This is a prototype and assumes all players will follow the rules, no pieces have logic so don't cheat lol"
               "\n-Castling is called with the command o-o or king side, or o-o-o for queen side.")
         self.b.printBoard()
-
         self.movecount = 0
         self.Ofirstval = 0
         self.Dfirstval = 0
         self.Dsecondval = 0
         self.Osecondval = 0
-
         self.location = 1
         self.king = 'K'
         self.castle = 'C'
@@ -60,7 +62,6 @@ class Gameplay:
             self.moveCount()
             return
 
-
         elif len(self.origin) > 2 or len(self.origin) < 2:
             print("Enter a valid move")
             self.move()
@@ -101,6 +102,7 @@ class Gameplay:
                             self.Dfirstval = self.moveDic[self.destination[0]]
                             self.Dsecondval = self.destination[1]
                             if self.checkSecondVal():
+
                                 self.b.printBoard()
                                 self.moveCount()
 
@@ -142,8 +144,12 @@ class Gameplay:
                 print("Select a valid position")
                 self.move()
             else:
+
+                s.update(self.b.board[int(self.Osecondval)][int(self.Ofirstval)], int(self.Dsecondval), int(self.Dfirstval))
+                s.update('.', int(self.Osecondval), int(self.Ofirstval))
                 self.b.board[int(self.Dsecondval)][int(self.Dfirstval)] = self.b.board[int(self.Osecondval)][
                     int(self.Ofirstval)]
+
                 self.b.board[int(self.Osecondval)][int(self.Ofirstval)] = '.'
                 return True
 
@@ -152,6 +158,8 @@ class Gameplay:
                 print("Select a valid position")
                 self.move()
             else:
+                s.update(self.b.board[int(self.Osecondval)][int(self.Ofirstval)], int(self.Dsecondval), int(self.Dfirstval))
+                s.update('.', int(self.Osecondval), int(self.Ofirstval))
                 self.b.board[int(self.Dsecondval)][int(self.Dfirstval)] = self.b.board[int(self.Osecondval)][
                     int(self.Ofirstval)]
                 self.b.board[int(self.Osecondval)][int(self.Ofirstval)] = '.'
@@ -166,10 +174,19 @@ class Gameplay:
                     self.move()
                     return False
                 elif self.b.board[self.location][1] == self.castle:
+
+                    s.update('.', self.location, 4)
+                    s.update('.', self.location, 1)
+                    s.update(self.king, self.location, 2)
+                    s.update(self.castle, self.location, 3)
+
+
+
                     self.b.board[self.location][4] = '.'
                     self.b.board[self.location][1] = '.'
                     self.b.board[self.location][2] = self.king
                     self.b.board[self.location][3] = self.castle
+
                     return True
                 else:
                     print("Invalid move")
@@ -186,10 +203,16 @@ class Gameplay:
 
                         return False
                     elif self.b.board[self.location][8] == self.castle:
+
+                        s.update('.', self.location, 8)
+                        s.update('.', self.location, 4)
+                        s.update(self.king, self.location, 6)
+                        s.update(self.castle, self.location, 7)
+
                         self.b.board[self.location][8] = '.'
                         self.b.board[self.location][4] = '.'
-                        self.b.board[self.location][7] = self.king
-                        self.b.board[self.location][6] = self.castle
+                        self.b.board[self.location][6] = self.king
+                        self.b.board[self.location][7] = self.castle
                         return True
                     else:
                         print("Invalid move")
